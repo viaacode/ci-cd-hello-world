@@ -17,9 +17,9 @@ login:
 build:
 	docker build -t "${REGISTRY}/${IMAGE_NAME}:${VERSION}" .
 test:
-	docker container run --name "${APP_NAME}_test" \
+	docker container run -v "$(pwd)/junit_results:/app/junit/" --name "${APP_NAME}_test" \
 					--entrypoint python "${REGISTRY}/${IMAGE_NAME}:${VERSION}" \
-					"-m" "pytest" "--cov=./app/" "--junit-xml=./tests/test_results.xml"
+					"-m" "pytest" "--cov=./app/" "--junit-xml=./app/junit/test_results.xml"
 lint:
 	docker container run --name "${APP_NAME}_lint" \
 					--entrypoint flake8 "${REGISTRY}/${IMAGE_NAME}:${VERSION}" \
