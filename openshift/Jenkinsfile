@@ -78,7 +78,7 @@ pipeline {
     }
     post {
         always {
-            junit '/junit_results/test_results.xml'
+            junit '/var/lib/docker/volumes/ci-cd-hello-world_vol/_data/test_results.xml'
             sh 'make -f ./openshift/Makefile post-clean'
             cleanWs()
         }

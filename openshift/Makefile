@@ -17,7 +17,7 @@ login:
 build:
 	docker build -t "${REGISTRY}/${IMAGE_NAME}:${VERSION}" .
 test:
-	docker container run -v "$(pwd)/junit_results:/app/junit/" --name "${APP_NAME}_test" \
+	docker container run -v "${APP_NAME}_vol:/app/app/junit/" --name "${APP_NAME}_test" \
 					--entrypoint python "${REGISTRY}/${IMAGE_NAME}:${VERSION}" \
 					"-m" "pytest" "--cov=./app/" "--junit-xml=./app/junit/test_results.xml"
 lint:
@@ -49,3 +49,4 @@ approved:
 post-clean:
 	docker container rm "${APP_NAME}_test"
 	docker container rm "${APP_NAME}_lint"
+	docker volume rm "${APP_NAME}_vol"
