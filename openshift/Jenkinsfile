@@ -59,19 +59,21 @@ pipeline {
                 sh 'make -f ./openshift/Makefile test-qas'
             }
         }
-        stage('Approve') {
-            steps {
-                input message: "Do you want to approve the deploy in production?", id: "approval"
-                sh 'make -f ./openshift/Makefile approved'
-            }
-        }
         stage('Tag PRD') {
+            when {
+                buildingTag()
+            }
             steps {
+                echo 'Tag PRD'
                 sh 'make -f ./openshift/Makefile tag-prd'
             }
         }
         stage('Deploy PRD') {
+            when {
+                buildingTag()
+            }
             steps {
+                echo 'Deploy PRD'
                 sh 'make -f ./openshift/Makefile deploy-prd'
             }
         }
