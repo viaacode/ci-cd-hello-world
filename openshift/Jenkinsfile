@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Preamble') {
             steps {
-                echo 'REF TAG: ${env.REF_TAG}'
+                echo "REF TAG: ${env.REF_TAG}"
             }
         }
         stage('Build docker image') {
