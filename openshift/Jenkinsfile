@@ -8,7 +8,15 @@ pipeline {
     options {
         timeout(time: 45, unit: 'MINUTES')
     }
+    environment {
+        REF_TAG = sh(returnStdout: true, script: "git describe --exact-match --tags HEAD || echo noTagMatches").trim()
+    }
     stages {
+        stage('Preamble') {
+            steps {
+                echo 'REF TAG: ${env.REF_TAG}'
+            }
+        }
         stage('Build docker image') {
             steps {
                 sh 'make -f ./openshift/Makefile build'
@@ -59,20 +67,13 @@ pipeline {
                 sh 'make -f ./openshift/Makefile test-qas'
             }
         }
-        stage('Tag PRD') {
+        stage('Tag and deploy PRD') {
             when {
-                buildingTag()
+                expression { env.REF_TAG != "noTagMatches" }
             }
             steps {
                 echo 'Tag PRD'
                 sh 'make -f ./openshift/Makefile tag-prd'
-            }
-        }
-        stage('Deploy PRD') {
-            when {
-                buildingTag()
-            }
-            steps {
                 echo 'Deploy PRD'
                 sh 'make -f ./openshift/Makefile deploy-prd'
             }
