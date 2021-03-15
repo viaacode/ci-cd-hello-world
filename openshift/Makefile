@@ -28,21 +28,18 @@ lint:
 push: 	login
 	docker push ${REGISTRY}/${IMAGE_NAME}:${VERSION}
 
-tag-int:
-	oc tag ${IMAGE_NAME}:${VERSION} ${IMAGE_NAME}:int
 deploy-int:
+	# There is no int component, so just tag
+	oc tag ${IMAGE_NAME}:${VERSION} ${IMAGE_NAME}:int
 test-int:
 
-tag-qas:
-	oc tag ${IMAGE_NAME}:${VERSION} ${IMAGE_NAME}:qas
 deploy-qas:
-	bash ./openshift/wait4rollout.sh qas ${APP_NAME}
+	bash ./openshift/wait4rollout.sh qas ${APP_NAME} ${IMAGE_NAME} ${VERSION}
 test-qas:
 
-tag-prd:
-	oc tag ${IMAGE_NAME}:${VERSION} ${IMAGE_NAME}:prd
-deploy-prd:
 
+deploy-prd:
+	bash ./openshift/wait4rollout.sh prd ${APP_NAME} ${IMAGE_NAME} ${VERSION}
 approved:
 	echo "Approved"
 

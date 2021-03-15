@@ -37,12 +37,7 @@ pipeline {
                 sh 'make -f ./openshift/Makefile push'
             }
         }
-        stage('Tag INT') {
-            steps {
-                sh 'make -f ./openshift/Makefile tag-int'
-            }
-        }
-        stage('Deploy INT') {
+        stage('Tag and deploy INT') {
             steps {
                 sh 'make -f ./openshift/Makefile deploy-int'
             }
@@ -52,12 +47,7 @@ pipeline {
                 sh 'make -f ./openshift/Makefile test-int'
             }
         }
-        stage('Tag QAS') {
-            steps {
-                sh 'make -f ./openshift/Makefile tag-qas'
-            }
-        }
-        stage('Deploy qas') {
+        stage('Tag and deploy QAS') {
             steps {
                 sh 'make -f ./openshift/Makefile deploy-qas'
             }
@@ -72,9 +62,7 @@ pipeline {
                 expression { env.REF_TAG != "noTagMatches" }
             }
             steps {
-                echo 'Tag PRD'
-                sh 'make -f ./openshift/Makefile tag-prd'
-                echo 'Deploy PRD'
+                echo 'Tag and deploy PRD'
                 sh 'make -f ./openshift/Makefile deploy-prd'
             }
         }

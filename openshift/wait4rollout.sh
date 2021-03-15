@@ -19,7 +19,7 @@ get_currentversion(){
 }
 
 get_currentversion $1 $2
-oc rollout latest dc/${2}-${1}
+oc tag $3:$4 $3:$1
 
 echo "${1} version to compare ${cur_ver}, new version ${new_ver}"
 
