@@ -1,5 +1,8 @@
 # ci-cd-hello-world
 
+> [!CAUTION]
+> This example is not relevant anymore and the repo is archived. See [cicd-helloworld-example](https://github.com/viaacode/cicd-helloworld-example) for an example that is more aligned to the current CI/CD flow.
+
 ## Synopsis
 
 ## Prerequisites
